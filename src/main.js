@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function Main() {
     const [state, setState] = useState([]);
     const [value, setValue] = useState('');
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState('zero');
     const [selected, setSelected] = useState({});
     const [id, setId] = useState(-1)
     const [qrCodeData, setQrCodeData] = useState("");
@@ -38,6 +38,7 @@ function Main() {
                     height: 250,
                 },
                 fps: 5,
+                
             });
 
             scanner.render(
@@ -49,11 +50,6 @@ function Main() {
             );
         }
 
-        return () => {
-            if (scanner) {
-                scanner.clear();
-            }
-        };
     };
 
     const handleDestinationFocus = () => {
@@ -75,7 +71,9 @@ function Main() {
                 method:'POST',
                 body: JSON.stringify(post)
             })
-            toast.success("Successful")
+            toast.success("Successful",{
+                autoClose: 2000
+            })
         }
         else{
             toast.error("Failed, Try again",{
@@ -92,6 +90,53 @@ function Main() {
         setId(selectedItem.id)
         setSelected(selectedItem); // Update selected state directly with selectedItem
     };
+
+    const numberToText = (price)=>{
+        let number = price
+        const units = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+        const teens = ['', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+        const tens = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+        
+        if (number === 0) {
+            return 'zero';
+        }
+
+        if (number < 0) {
+            return 'minus ' + numberToText(-number);
+        }
+
+        if (number < 10) {
+            return units[number];
+        }
+
+        if (number < 20) {
+            return teens[number - 10];
+        }
+
+        if (number < 100) {
+            return tens[Math.floor(number / 10)] + (number % 10 !== 0 ? ' ' + units[number % 10] : '');
+        }
+
+        if (number < 1000) {
+            return units[Math.floor(number / 100)] + ' hundred' + (number % 100 !== 0 ? ' ' + numberToText(number % 100) : '');
+        }
+
+        if (number < 100000) {
+            return numberToText(Math.floor(number / 1000)) + ' thousand' + (number % 1000 !== 0 ? ' ' + numberToText(number % 1000) : '');
+        }
+
+        if (number < 10000000) {
+            return numberToText(Math.floor(number / 100000)) + ' lakh' + (number % 100000 !== 0 ? ' ' + numberToText(number % 100000) : '');
+        }
+
+        if (number < 1000000000) {
+            return numberToText(Math.floor(number / 10000000)) + ' crore' + (number % 10000000 !== 0 ? ' ' + numberToText(number % 10000000) : '');
+        }
+
+        // Add support for more units as needed
+        return 'out of range';
+        
+    }
     return (
         <div className="parent">
             <div className="upperContainer">
@@ -111,10 +156,14 @@ function Main() {
                         <label>Quantity</label>
                         <br />
                         <input
-                            onChange={(e) => setPrice(e.target.value)}
+                            onChange={(e) =>{
+                                setPrice(numberToText(e.target.value))
+                                }
+                            }
                             className="number"
                             type="number"
                         />
+                        <p>{price}</p>
                     </div>
                     <div>
                         <label>Unit</label>
@@ -122,7 +171,6 @@ function Main() {
                         <input value={value} className="unit" type="text" readOnly />
                     </div>
                 </div>
-                <p>{price}</p>
             </div>
             <div className="lowerContainer">
                 <div>
@@ -140,7 +188,7 @@ function Main() {
                 <div id='reader'></div>
             </div>
             <button type='click' onClick={handleSubmit}>Submit</button>
-            <ToastContainer/>
+            <ToastContainer />
         </div>
     );
 }
