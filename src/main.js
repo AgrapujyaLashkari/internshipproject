@@ -8,6 +8,7 @@ function Main() {
     const [selected, setSelected] = useState({});
     const [qrCodeData, setQrCodeData] = useState("");
     const [scanning, setScanning] = useState(false);
+    const [allowedLocation, setAllowedLocation] = useState([]);
 
     useEffect(() => {
         fetchItems();
@@ -59,6 +60,22 @@ function Main() {
     const handleDestinationBlur = () => {
         setScanning(false);
     };
+    const handleSubmit = ()=>{
+     
+        if(allowedLocation.includes(qrCodeData)){
+            console.log("Valid")
+        }
+        else{
+            console.log("INVALID")
+        }
+    }
+
+    const handleItemSelected = (itemId) => {
+        const selectedItem = state.find(item => item.id === parseInt(itemId));
+        setValue(selectedItem ? selectedItem.unit : '');
+        setAllowedLocation(selectedItem ? selectedItem.allowed_locations : []);
+        setSelected(selectedItem); // Update selected state directly with selectedItem
+    };
 
     return (
         <div className="parent">
@@ -66,11 +83,7 @@ function Main() {
                 <div className="dropDown">
                     <label>Select Items</label>
                     <div>
-                        <select onChange={(e) => {
-                            const selectedItem = state.find(item => item.id === parseInt(e.target.value));
-                            setSelected(selectedItem || {});
-                            setValue(selectedItem ? selectedItem.unit : '');
-                        }}>
+                        <select onChange={(e) => handleItemSelected(e.target.value)}>
                             <option>Select Item</option>
                             {state.map(item => (
                                 <option key={item.id} value={item.id}>{item.item_name}</option>
@@ -111,10 +124,9 @@ function Main() {
                 </div>
                 <div id='reader'></div>
             </div>
-            <button type='submit'>Submit</button>
+            <button type='click' onClick={handleSubmit}>Submit</button>
         </div>
     );
 }
 
 export default Main;
-

@@ -33,7 +33,7 @@ html{
   gap: 10px
 }
 .upperContainer{
-  max-width: 300px;
+  width: 300px;
   margin: 50px;
   background-color: white;
   padding: 20px;
@@ -52,7 +52,7 @@ input{
   border: 2px solid #a7a3a3; /* Border style */
   padding: 8px; /* Padding inside the select */
   font-size: 16px; /* Font size */
-  width: 200px; 
+  max-width: 200px; 
   background-color: rgb(182, 178, 178);
 }
 .number{
@@ -60,7 +60,7 @@ input{
   border: 2px solid #a7a3a3; /* Border style */
   padding: 8px; /* Padding inside the select */
   font-size: 16px; /* Font size */
-  width: 150px; 
+  max-width: 150px; 
   background-color: rgb(182, 178, 178);
 }
 .unit{
@@ -68,11 +68,11 @@ input{
   border: 2px solid #a7a3a3; /* Border style */
   padding: 8px; /* Padding inside the select */
   font-size: 16px; /* Font size */
-  width: 40px; 
+  max-width: 40px; 
   background-color: rgb(182, 178, 178);
 }
 .qrCode {
-  width: 300px;
+  max-width: 300px;
   padding: 5px;
   font-size: 16px;
   cursor: pointer;
@@ -86,7 +86,7 @@ select{
   border: 2px solid #a7a3a3; /* Border style */
   padding: 8px; /* Padding inside the select */
   font-size: 16px; /* Font size */
-  width: 300px; 
+  max-width: 300px; 
   background-color: rgb(182, 178, 178);
   margin-bottom: 50px;
 }
