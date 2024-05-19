@@ -6,6 +6,7 @@ function Main() {
     const [value, setValue] = useState('');
     const [price, setPrice] = useState(0);
     const [selected, setSelected] = useState({});
+    const [id, setId] = useState(-1)
     const [qrCodeData, setQrCodeData] = useState("");
     const [scanning, setScanning] = useState(false);
     const [allowedLocation, setAllowedLocation] = useState([]);
@@ -61,11 +62,20 @@ function Main() {
         setScanning(false);
     };
     const handleSubmit = ()=>{
-     
         if(allowedLocation.includes(qrCodeData)){
             console.log("Valid")
+            const post = {
+                "id":id,
+                "item_name": selected.item_name,
+                "location":qrCodeData,
+            }
+            const postReq = fetch("https://api-staging.inveesync.in/test/submit",{
+                method:'POST',
+                body: JSON.stringify(post)
+            })
         }
         else{
+            alert("INVALID")
             console.log("INVALID")
         }
     }
@@ -74,6 +84,7 @@ function Main() {
         const selectedItem = state.find(item => item.id === parseInt(itemId));
         setValue(selectedItem ? selectedItem.unit : '');
         setAllowedLocation(selectedItem ? selectedItem.allowed_locations : []);
+        setId(selectedItem.id)
         setSelected(selectedItem); // Update selected state directly with selectedItem
     };
 
@@ -130,3 +141,17 @@ function Main() {
 }
 
 export default Main;
+
+
+
+
+
+
+
+const hasvdhdf= fetch('api', {
+    method: 'POST',
+    body: {
+
+    }
+})
+hasvdhdf.then(res=>res.json()).then(response => console.log(response))
