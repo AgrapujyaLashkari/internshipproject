@@ -12,7 +12,9 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+html{
+  background-color: rgb(216, 216, 216);
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -22,6 +24,81 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+
+.quantity{
+  display: flex;
+  justify-content: space-between;
+  gap: 10px
+}
+.upperContainer{
+  max-width: 300px;
+  margin: 50px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+
+}
+.parent{
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 40px;
+  align-items: center;
+}
+input{
+  border-radius: 8px; /* Rounded corners */
+  border: 2px solid #a7a3a3; /* Border style */
+  padding: 8px; /* Padding inside the select */
+  font-size: 16px; /* Font size */
+  width: 200px; 
+  background-color: rgb(182, 178, 178);
+}
+.number{
+  border-radius: 8px; /* Rounded corners */
+  border: 2px solid #a7a3a3; /* Border style */
+  padding: 8px; /* Padding inside the select */
+  font-size: 16px; /* Font size */
+  width: 150px; 
+  background-color: rgb(182, 178, 178);
+}
+.unit{
+  border-radius: 8px; /* Rounded corners */
+  border: 2px solid #a7a3a3; /* Border style */
+  padding: 8px; /* Padding inside the select */
+  font-size: 16px; /* Font size */
+  width: 40px; 
+  background-color: rgb(182, 178, 178);
+}
+.qrCode {
+  width: 300px;
+  padding: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.scanner {
+  margin-top: 20px;
+}
+select{
+  border-radius: 8px; /* Rounded corners */
+  border: 2px solid #a7a3a3; /* Border style */
+  padding: 8px; /* Padding inside the select */
+  font-size: 16px; /* Font size */
+  width: 300px; 
+  background-color: rgb(182, 178, 178);
+  margin-bottom: 50px;
+}
+button{
+  background-color: skyblue;
+  border-radius: 8px;
+  scale: 1.5;
+}
+.lowerContainer{
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
 }
 
 .App-link {
