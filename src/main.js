@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Main() {
     const [state, setState] = useState([]);
@@ -73,9 +75,12 @@ function Main() {
                 method:'POST',
                 body: JSON.stringify(post)
             })
+            toast.success("Successful")
         }
         else{
-            alert("INVALID")
+            toast.error("Failed, Try again",{
+                autoClose: 2000
+            })
             console.log("INVALID")
         }
     }
@@ -87,7 +92,6 @@ function Main() {
         setId(selectedItem.id)
         setSelected(selectedItem); // Update selected state directly with selectedItem
     };
-
     return (
         <div className="parent">
             <div className="upperContainer">
@@ -136,22 +140,9 @@ function Main() {
                 <div id='reader'></div>
             </div>
             <button type='click' onClick={handleSubmit}>Submit</button>
+            <ToastContainer/>
         </div>
     );
 }
 
 export default Main;
-
-
-
-
-
-
-
-const hasvdhdf= fetch('api', {
-    method: 'POST',
-    body: {
-
-    }
-})
-hasvdhdf.then(res=>res.json()).then(response => console.log(response))
