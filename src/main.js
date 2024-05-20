@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './App.css'; // Import the CSS file
 
 function Main() {
     const [state, setState] = useState([]);
     const [value, setValue] = useState('');
-    const [price, setPrice] = useState('zero');
+    const [price, setPrice] = useState('none');
     const [selected, setSelected] = useState({});
     const [id, setId] = useState(-1)
     const [qrCodeData, setQrCodeData] = useState("");
@@ -29,74 +30,73 @@ function Main() {
     };
 
     const initializeScanner = () => {
-        let scanner = null;
-
         if (scanning) {
-            scanner = new Html5QrcodeScanner('reader', {
+            const scanner = new Html5QrcodeScanner('reader', {
                 qrbox: {
                     width: 250,
                     height: 250,
                 },
                 fps: 5,
-                
             });
 
             scanner.render(
                 (result) => {
                     scanner.clear();
                     setQrCodeData(result);
+                    setScanning(false); // Stop scanning after a successful read
                 },
                 (error) => console.warn('QR Code scanner error:', error)
             );
         }
-
     };
-
-    const handleDestinationFocus = () => {
-        setScanning(true);
-    };
-
-    const handleDestinationBlur = () => {
-        setScanning(false);
-    };
-    const handleSubmit = ()=>{
-        if(allowedLocation.includes(qrCodeData)){
-            console.log("Valid")
-            const post = {
-                "id":id,
-                "item_name": selected.item_name,
-                "location":qrCodeData,
-            }
-            const postReq = fetch("https://api-staging.inveesync.in/test/submit",{
-                method:'POST',
-                body: JSON.stringify(post)
-            })
-            toast.success("Successful",{
-                autoClose: 2000
-            })
-        }
-        else{
-            toast.error("Failed, Try again",{
-                autoClose: 2000
-            })
-            console.log("INVALID")
-        }
+    const handle = ()=>{
+        setScanning(!scanning)
     }
+    // const handleDestinationFocus = () => {
+    //     setScanning(true);
+    // };
+
+    // const handleDestinationBlur = () => {
+    //     setScanning(false);
+    // };
+
+    const handleSubmit = () => {
+        if (allowedLocation.includes(qrCodeData)) {
+            const post = {
+                id: id,
+                item_name: selected.item_name,
+                location: qrCodeData,
+            };
+            fetch("https://api-staging.inveesync.in/test/submit", {
+                method: 'POST',
+                body: JSON.stringify(post),
+            })
+                .then(response => response.json())
+                .then(() => {
+                    toast.success("Successful", { autoClose: 2000 });
+                })
+                .catch(error => {
+                    toast.error("Failed, Try again", { autoClose: 2000 });
+                    console.error('Error submitting data:', error);
+                });
+        } else {
+            toast.error("Failed, Try again", { autoClose: 2000 });
+        }
+    };
 
     const handleItemSelected = (itemId) => {
         const selectedItem = state.find(item => item.id === parseInt(itemId));
         setValue(selectedItem ? selectedItem.unit : '');
         setAllowedLocation(selectedItem ? selectedItem.allowed_locations : []);
         setId(selectedItem.id)
-        setSelected(selectedItem); // Update selected state directly with selectedItem
+        setSelected(selectedItem);
     };
 
-    const numberToText = (price)=>{
-        let number = price
+    const numberToText = (number) => {
         const units = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
         const teens = ['', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
         const tens = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
-        
+
         if (number === 0) {
             return 'zero';
         }
@@ -133,37 +133,34 @@ function Main() {
             return numberToText(Math.floor(number / 10000000)) + ' crore' + (number % 10000000 !== 0 ? ' ' + numberToText(number % 10000000) : '');
         }
 
-        // Add support for more units as needed
         return 'out of range';
-        
-    }
+    };
+
     return (
         <div className="parent">
             <div className="upperContainer">
                 <div className="dropDown">
                     <label>Select Items</label>
-                    <div>
-                        <select onChange={(e) => handleItemSelected(e.target.value)}>
-                            <option>Select Item</option>
-                            {state.map(item => (
-                                <option key={item.id} value={item.id}>{item.item_name}</option>
-                            ))}
-                        </select>
-                    </div>
+                    <select onChange={(e) => handleItemSelected(e.target.value)}>
+                        <option>Select Item</option>
+                        {state.map(item => (
+                            <option key={item.id} value={item.id}>{item.item_name}</option>
+                        ))}
+                    </select>
+
                 </div>
                 <div className="quantity">
                     <div>
                         <label>Quantity</label>
                         <br />
                         <input
-                            onChange={(e) =>{
+                            onChange={(e) => {
                                 setPrice(numberToText(e.target.value))
-                                }
-                            }
+                            }}
+                            min={0}
                             className="number"
                             type="number"
                         />
-                        <p>{price}</p>
                     </div>
                     <div>
                         <label>Unit</label>
@@ -171,6 +168,7 @@ function Main() {
                         <input value={value} className="unit" type="text" readOnly />
                     </div>
                 </div>
+                <div className='price'>{price}</div>
             </div>
             <div className="lowerContainer">
                 <div>
@@ -180,14 +178,20 @@ function Main() {
                         className="qrCode"
                         type="text"
                         value={qrCodeData}
-                        onFocus={handleDestinationFocus}
-                        onBlur={handleDestinationBlur}
+                        // onFocus={handleDestinationFocus}
+                        // onBlur={handleDestinationBlur}
+                        onClick={handle}
                         readOnly
                     />
                 </div>
-                <div id='reader'></div>
             </div>
-            <button type='click' onClick={handleSubmit}>Submit</button>
+            {scanning && (
+                <div className="modal">
+                    <div id="reader"></div>
+                    <button className='modalClose' onClick={handle}>X</button>
+                </div>
+            )}
+            <button type='button' onClick={handleSubmit}>Submit</button>
             <ToastContainer />
         </div>
     );

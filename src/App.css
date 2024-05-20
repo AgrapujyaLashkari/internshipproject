@@ -1,136 +1,178 @@
-.App {
-  text-align: center;
+/* Apply general styles to the entire HTML document */
+html {
+  background-color: #f5f5f5;
+  font-family: Arial, sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-html{
-  background-color: rgb(216, 216, 216);
-}
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Style for the parent container */
+.parent {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 100%;
+}
+
+
+/* Common styles for upper and lower container */
+.upperContainer, .lowerContainer {
+  background-color: #fff;
+  margin: 20px;
+  padding: 50px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  width: inherit;
+  box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+}
+
+/* Style for dropdown and quantity sections */
+.dropDown {
+  margin-bottom: 20px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+select {
+  height: 50px;
+  border-radius: 8px;
+  background-color: rgb(219, 213, 213);
+  padding: 0px 8px;
+  width: 100%; /* Ensure the select element doesn't overflow its parent */
+}
+
+/* Style for the quantity section */
+.quantity {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  max-width: inherit;
+}
+.modalClose{
+  background-color: red;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-
-.quantity{
-  display: flex;
-  justify-content: space-between;
-  gap: 10px
-}
-.upperContainer{
-  width: 300px;
-  margin: 50px;
-  background-color: white;
+  height: 5px;
+  width: 5px; 
   padding: 20px;
-  border-radius: 8px;
-}
-.parent{
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  gap: 40px;
-  align-items: center;
+  
+  border: 1px solid green;
+  border-radius: 50%;
+
 }
 
-.number{
-  border-radius: 8px; /* Rounded corners */
-  border: 2px solid #a7a3a3; /* Border style */
-  padding: 8px; /* Padding inside the select */
-  font-size: 16px; /* Font size */
-  max-width: 150px; 
-  background-color: rgb(182, 178, 178);
-}
-.unit{
-  border-radius: 8px; /* Rounded corners */
-  border: 2px solid #a7a3a3; /* Border style */
-  padding: 8px; /* Padding inside the select */
-  font-size: 16px; /* Font size */
-  max-width: 40px; 
-  background-color: rgb(182, 178, 178);
-}
-.qrCode {
-  max-width: 300px;
-  padding: 5px;
-  font-size: 16px;
-  cursor: pointer;
-}
-input{
-  border-radius: 8px; /* Rounded corners */
-  border: 2px solid #a7a3a3; /* Border style */
-  padding: 8px; /* Padding inside the select */
-  font-size: 16px; /* Font size */
-  max-width: 40px; 
-  background-color: rgb(182, 178, 178);
+/* Input field styles for number, unit, and QR code */
+.number, .unit, .qrCode {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: rgb(219, 213, 213);
+  width: 100%; /* Ensure the input fields don't overflow their parent */
+  box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
 }
 
-.scanner {
+/* Button styles */
+button {
+  padding: 12px 24px;
   margin-top: 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
-select{
-  border-radius: 8px; /* Rounded corners */
-  border: 2px solid #a7a3a3; /* Border style */
-  padding: 8px; /* Padding inside the select */
-  font-size: 16px; /* Font size */
-  max-width: 300px; 
-  background-color: rgb(182, 178, 178);
-  margin-bottom: 50px;
+
+/* Button hover effect */
+button:hover {
+  background-color: #45a049;
 }
-button{
-  background-color: skyblue;
-  border-radius: 8px;
-  scale: 1.5;
-}
-.lowerContainer{
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
+
+/* Modal styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
 }
 
-.App-link {
-  color: #61dafb;
+/* Reader styles */
+#reader {
+  width: 90%;
+  max-width: 400px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+/* Close button styles */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ff5c5c;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: none;
+}
+.price{
+  color: red;
+}
+
+/* Close button hover effect */
+.close-btn:hover {
+  background: #e45454;
+}
+
+/* Toast container styles */
+.Toastify__toast-container {
+  width: 320px;
+  padding: 20px;
+}
+
+/* Toast styles */
+.Toastify__toast {
+  border-radius: 5px;
+}
+
+/* Success toast styles */
+.Toastify__toast--success {
+  background-color: #4CAF50;
+}
+
+/* Error toast styles */
+.Toastify__toast--error {
+  background-color: #f44336;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  /* Adjustments for smaller screens */
+  .parent {
+    max-width: 80%; /* Increase the maximum width for better visibility */
+    padding: 10px;
   }
 }
 
-
-@media only screen and (min-width: 768px) {
-  .upperContainer{
-    width: 500px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: left;
-  }
-  .quantity{
-    gap: 100px;
-  }
-  select{
-    width: 500px; 
-    background-color: rgb(182, 178, 178);
-    margin-bottom: 50px;
+@media (max-width: 480px) {
+  /* Adjustments for even smaller screens */
+  .parent {
+    max-width: 90%; /* Increase the maximum width for better visibility */
+    padding: 5px;
   }
 }
